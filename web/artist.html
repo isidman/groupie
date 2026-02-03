@@ -1,0 +1,55 @@
+<!--
+artist.html
+Σελίδα λεπτομερειών καλλιτέχνη.
+Εμφανίζει βασικές πληροφορίες και τις συναυλίες
+με βάση τα δεδομένα relations.
+-->
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{.Artist.Name}}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main class="container">
+    <a href="/">← Πίσω</a>
+
+    <section class="artist">
+      <img class="artist-img" src="{{.Artist.Image}}" alt="{{.Artist.Name}}" />
+      <div>
+        <h1>{{.Artist.Name}}</h1>
+        <p><b>Έτος δημιουργίας:</b> {{.Artist.CreationDate}}</p>
+        <p><b>Πρώτο άλμπουμ:</b> {{.Artist.FirstAlbum}}</p>
+
+        <h3>Μέλη</h3>
+        <ul>
+          {{range .Artist.Members}}
+            <li>{{.}}</li>
+          {{end}}
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Συναυλίες</h2>
+
+      {{if .Concerts}}
+        {{range .Concerts}}
+          <div class="concert">
+            <h3>{{.Location}}</h3>
+            <ul>
+              {{range .Dates}}
+                <li>{{.}}</li>
+              {{end}}
+            </ul>
+          </div>
+        {{end}}
+      {{else}}
+        <p>Δεν βρέθηκαν συναυλίες.</p>
+      {{end}}
+    </section>
+  </main>
+</body>
+</html>

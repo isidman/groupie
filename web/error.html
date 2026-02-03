@@ -1,0 +1,21 @@
+<!--
+error.html
+Κοινή σελίδα εμφάνισης σφαλμάτων (404, 500).
+Χρησιμοποιείται ώστε ο server να μην καταρρέει.
+-->
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{.Title}}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>{{.Title}}</h1>
+    <p>{{.Message}}</p>
+    <p><a href="/">Επιστροφή στην αρχική</a></p>
+  </main>
+</body>
+</html>

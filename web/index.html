@@ -1,0 +1,34 @@
+<!--
+index.html
+Αρχική σελίδα της εφαρμογής.
+Εμφανίζει όλους τους καλλιτέχνες σε μορφή λίστας ή καρτών.
+Κάθε καλλιτέχνης οδηγεί στη σελίδα λεπτομερειών του.
+-->
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Groupie Trackers</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="container">
+    <h1>Groupie Trackers</h1>
+    <p>Λίστα καλλιτεχνών</p>
+  </header>
+
+  <main class="container grid">
+    {{range .}}
+      <a class="card" href="/artist?id={{.ID}}">
+        <img class="thumb" src="{{.Image}}" alt="{{.Name}}" />
+        <div class="card-body">
+          <h2>{{.Name}}</h2>
+          <p><b>Έτος:</b> {{.CreationDate}}</p>
+          <p><b>Μέλη:</b> {{len .Members}}</p>
+        </div>
+      </a>
+    {{end}}
+  </main>
+</body>
+</html>
