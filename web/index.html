@@ -15,7 +15,7 @@ index.html
 <body>
   <header class="container">
     <h1>Groupie Trackers</h1>
-    <p>Λίστα καλλιτεχνών</p>
+    <p>Artists List</p>
   </header>
 
   <main class="container grid">
@@ -24,8 +24,8 @@ index.html
         <img class="thumb" src="{{.Image}}" alt="{{.Name}}" />
         <div class="card-body">
           <h2>{{.Name}}</h2>
-          <p><b>Έτος:</b> {{.CreationDate}}</p>
-          <p><b>Μέλη:</b> {{len .Members}}</p>
+          <p><b>Year:</b> {{.CreationDate}}</p>
+          <p><b>Members:</b> {{len .Members}}</p>
         </div>
       </a>
     {{end}}

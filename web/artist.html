@@ -14,16 +14,16 @@ artist.html
 </head>
 <body>
   <main class="container">
-    <a href="/">← Πίσω</a>
+    <a href="/">← Back</a>
 
     <section class="artist">
       <img class="artist-img" src="{{.Artist.Image}}" alt="{{.Artist.Name}}" />
       <div>
         <h1>{{.Artist.Name}}</h1>
-        <p><b>Έτος δημιουργίας:</b> {{.Artist.CreationDate}}</p>
-        <p><b>Πρώτο άλμπουμ:</b> {{.Artist.FirstAlbum}}</p>
+        <p><b>Creation Year:</b> {{.Artist.CreationDate}}</p>
+        <p><b>First Album:</b> {{.Artist.FirstAlbum}}</p>
 
-        <h3>Μέλη</h3>
+        <h3>Members</h3>
         <ul>
           {{range .Artist.Members}}
             <li>{{.}}</li>
@@ -33,7 +33,7 @@ artist.html
     </section>
 
     <section>
-      <h2>Συναυλίες</h2>
+      <h2>Concerts</h2>
 
       {{if .Concerts}}
         {{range .Concerts}}
@@ -47,7 +47,7 @@ artist.html
           </div>
         {{end}}
       {{else}}
-        <p>Δεν βρέθηκαν συναυλίες.</p>
+        <p>No concerts found.</p>
       {{end}}
     </section>
   </main>
