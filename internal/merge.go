@@ -12,50 +12,67 @@ import (
 	"strings"
 )
 
-// BuildArtistPageData ενώνει Artist + Relation σε κάτι έτοιμο για template
-func BuildArtistPageData(a Artist, r Relation) ArtistPageData {
+// BuildArtistPageData builds all page data for the artist page
+func BuildArtistPageData(a Artist, r Relation, l Locations, d Dates) ArtistPageData {
 	concerts := make([]Concert, 0, len(r.DatesLocations))
 
 	for rawLoc, dates := range r.DatesLocations {
-		loc := FormatLocation(rawLoc)
+		location := FormatLocation(rawLoc)
 
 		cleanDates := make([]string, 0, len(dates))
-		for _, d := range dates {
-			cleanDates = append(cleanDates, strings.TrimPrefix(d, "*"))
+		for _, date := range dates {
+			cleanDates = append(cleanDates, strings.TrimPrefix(date, "*"))
 		}
 
 		sort.Strings(cleanDates)
+
 		concerts = append(concerts, Concert{
-			Location: loc,
+			Location: location,
 			Dates:    cleanDates,
 		})
 	}
 
-	// Σταθερή σειρά (alphabetical) για ωραία εμφάνιση
 	sort.Slice(concerts, func(i, j int) bool {
 		return concerts[i].Location < concerts[j].Location
 	})
 
+	allLocations := make([]string, 0, len(l.Locations))
+	for _, loc := range l.Locations {
+		allLocations = append(allLocations, FormatLocation(loc))
+	}
+	sort.Strings(allLocations)
+
+	allDates := make([]string, 0, len(d.Dates))
+	for _, date := range d.Dates {
+		allDates = append(allDates, strings.TrimPrefix(date, "*"))
+	}
+	sort.Strings(allDates)
+
 	return ArtistPageData{
-		Artist:   a,
-		Concerts: concerts,
+		Artist:       a,
+		Concerts:     concerts,
+		AllLocations: allLocations,
+		AllDates:     allDates,
 	}
 }
 
-// FormatLocation μετατρέπει "athens-greece" ή "new_york-usa" σε "Athens, Greece"
+// FormatLocation converts "new_york-usa" to "New york, Usa"
 func FormatLocation(raw string) string {
 	raw = strings.ReplaceAll(raw, "_", " ")
 	parts := strings.Split(raw, "-")
+
 	for i := range parts {
-		parts[i] = title(parts[i])
+		parts[i] = capitalize(parts[i])
 	}
+
 	if len(parts) >= 2 {
 		return parts[0] + ", " + strings.Join(parts[1:], ", ")
 	}
-	return title(raw)
+
+	return capitalize(raw)
 }
 
-func title(s string) string {
+func capitalize(s string) string {
 	s = strings.TrimSpace(s)
 	if s == "" {
 		return s

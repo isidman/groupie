@@ -5,7 +5,7 @@ artist.html
 με βάση τα δεδομένα relations.
 -->
 <!doctype html>
-<html lang="el">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -33,8 +33,7 @@ artist.html
     </section>
 
     <section>
-      <h2>Concerts</h2>
-
+      <h2>Concerts (Relations)</h2>
       {{if .Concerts}}
         {{range .Concerts}}
           <div class="concert">
@@ -50,6 +49,40 @@ artist.html
         <p>No concerts found.</p>
       {{end}}
     </section>
+
+    <section>
+      <h2>All Locations</h2>
+      {{if .AllLocations}}
+        <ul>
+          {{range .AllLocations}}
+            <li>{{.}}</li>
+          {{end}}
+        </ul>
+      {{else}}
+        <p>No locations found.</p>
+      {{end}}
+    </section>
+
+    <section>
+      <h2>All Dates</h2>
+      {{if .AllDates}}
+        <ul>
+          {{range .AllDates}}
+            <li>{{.}}</li>
+          {{end}}
+        </ul>
+      {{else}}
+        <p>No dates found.</p>
+      {{end}}
+    </section>
+
+    <section>
+      <h2>Load Artist Data (Event Action)</h2>
+      <button id="load-data-btn" data-artist-id="{{.Artist.ID}}">Load JSON Data</button>
+      <pre id="artist-json-output"></pre>
+    </section>
+
+    <script src="/static/app.js"></script>
   </main>
 </body>
 </html>

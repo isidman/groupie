@@ -7,7 +7,7 @@
 
 package internal
 
-// Artist αναπαριστά έναν καλλιτέχνη/συγκρότημα όπως έρχεται από /api/artists
+// Artist represents one artist/band from /api/artists
 type Artist struct {
 	ID           int      `json:"id"`
 	Image        string   `json:"image"`
@@ -20,19 +20,33 @@ type Artist struct {
 	RelationsURL string   `json:"relations"`
 }
 
-// Relation αναπαριστά τα datesLocations από /api/relation/:id
+// Relation represents /api/relation/:id
 type Relation struct {
 	ID             int                 `json:"id"`
 	DatesLocations map[string][]string `json:"datesLocations"`
 }
 
-// View model για τη σελίδα artist (εύκολο για templates)
+// Locations represents /api/locations/:id
+type Locations struct {
+	ID        int      `json:"id"`
+	Locations []string `json:"locations"`
+	DatesURL  string   `json:"dates"`
+}
+
+// Dates represents /api/dates/:id
+type Dates struct {
+	ID    int      `json:"id"`
+	Dates []string `json:"dates"`
+}
+
 type Concert struct {
 	Location string
 	Dates    []string
 }
 
 type ArtistPageData struct {
-	Artist   Artist
-	Concerts []Concert
+	Artist       Artist
+	Concerts     []Concert
+	AllLocations []string
+	AllDates     []string
 }

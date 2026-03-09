@@ -1,5 +1,13 @@
-body { font-family: system-ui, Arial, sans-serif; margin: 0; }
-.container { max-width: 1000px; margin: 0 auto; padding: 16px; }
+body {
+  font-family: system-ui, Arial, sans-serif;
+  margin: 0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+}
 
 .grid {
   display: grid;
@@ -23,8 +31,14 @@ body { font-family: system-ui, Arial, sans-serif; margin: 0; }
   display: block;
 }
 
-.card-body { padding: 12px; }
-.card-body h2 { margin: 0 0 8px; font-size: 18px; }
+.card-body {
+  padding: 12px;
+}
+
+.card-body h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
 
 .artist {
   display: flex;
@@ -44,4 +58,13 @@ body { font-family: system-ui, Arial, sans-serif; margin: 0; }
   border-radius: 12px;
   padding: 12px;
   margin: 12px 0;
+}
+
+#artist-json-output {
+  background: #f6f6f6;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  white-space: pre-wrap;
+  overflow-x: auto;
 }

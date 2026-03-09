@@ -26,7 +26,7 @@ func NewClient(timeout time.Duration) *Client {
 	}
 }
 
-// fetchJSON κάνει GET και κάνει decode JSON στο v
+// fetchJSON performs a GET request and decodes JSON into v
 func (c *Client) fetchJSON(url string, v any) error {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -47,6 +47,7 @@ func (c *Client) fetchJSON(url string, v any) error {
 	if err := dec.Decode(v); err != nil {
 		return fmt.Errorf("decode json: %w", err)
 	}
+
 	return nil
 }
 
@@ -64,4 +65,20 @@ func (c *Client) GetRelationByID(id int) (Relation, error) {
 		return Relation{}, err
 	}
 	return rel, nil
+}
+
+func (c *Client) GetLocationsByID(id int) (Locations, error) {
+	var loc Locations
+	if err := c.fetchJSON(fmt.Sprintf("%s/locations/%d", baseAPI, id), &loc); err != nil {
+		return Locations{}, err
+	}
+	return loc, nil
+}
+
+func (c *Client) GetDatesByID(id int) (Dates, error) {
+	var dates Dates
+	if err := c.fetchJSON(fmt.Sprintf("%s/dates/%d", baseAPI, id), &dates); err != nil {
+		return Dates{}, err
+	}
+	return dates, nil
 }
