@@ -10,18 +10,19 @@ artist.html
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{{.Artist.Name}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
   <main class="container">
-    <a href="/">← Back</a>
+    <a class="back-link" href="/">← Back</a>
 
     <section class="artist">
       <img class="artist-img" src="{{.Artist.Image}}" alt="{{.Artist.Name}}" />
       <div>
         <h1>{{.Artist.Name}}</h1>
-        <p><b>Creation Year:</b> {{.Artist.CreationDate}}</p>
-        <p><b>First Album:</b> {{.Artist.FirstAlbum}}</p>
+        <p><span class="label">Creation Year: </span>{{.Artist.CreationDate}}</p>
+        <p><span class="label">First Album: </span> {{.Artist.FirstAlbum}}</p>
 
         <h3>Members</h3>
         <ul>
