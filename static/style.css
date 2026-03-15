@@ -149,6 +149,20 @@ a {
   margin: 12px 0;
 }
 
+.error-page {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 80px;
+}
+
+.error-page h1 {
+  font-size: 6rem;
+  color: var(--accent);
+  margin: 0 0 16px;
+}
+
 #artist-json-output {
   background-color: var(--surface);
   border: 1px solid var(--border);
