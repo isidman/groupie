@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
   
   const searchInput = document.getElementById("search-input");
   const suggestions = document.getElementById("search-suggestions");
-  console.log("search elements:", searchInput, suggestions); // debugging
 
   if (searchInput && suggestions) {
   //if they don't exist, return early
