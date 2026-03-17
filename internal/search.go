@@ -19,7 +19,7 @@ func SearchArtists(query string, artists []Artist) []SearchResult {
 				ArtistID:   artist.ID,
 				ArtistName: artist.Name,
 				Match:      artist.Name,
-				Type:       "artist",
+				Type:       "Artist",
 			})
 		}
 
@@ -29,7 +29,7 @@ func SearchArtists(query string, artists []Artist) []SearchResult {
 					ArtistID:   artist.ID,
 					ArtistName: artist.Name,
 					Match:      member,
-					Type:       "member",
+					Type:       "Member",
 				})
 			}
 		}
@@ -39,7 +39,7 @@ func SearchArtists(query string, artists []Artist) []SearchResult {
 				ArtistID:   artist.ID,
 				ArtistName: artist.Name,
 				Match:      artist.FirstAlbum,
-				Type:       "firstAlbum",
+				Type:       "First Album",
 			})
 		}
 
@@ -49,7 +49,7 @@ func SearchArtists(query string, artists []Artist) []SearchResult {
 				ArtistID:   artist.ID,
 				ArtistName: artist.Name,
 				Match:      creationDate,
-				Type:       "creationDate",
+				Type:       "Creation Date",
 			})
 		}
 
@@ -59,7 +59,7 @@ func SearchArtists(query string, artists []Artist) []SearchResult {
 					ArtistID:   artist.ID,
 					ArtistName: artist.Name,
 					Match:      location,
-					Type:       "location",
+					Type:       "Location",
 				})
 			}
 		}
