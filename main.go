@@ -27,6 +27,7 @@ func main() {
 	mux.HandleFunc("/artist", h.Artist)
 	mux.HandleFunc("/api/artist", h.ArtistAPI)
 	mux.HandleFunc("/api/search", h.Search)
+	mux.HandleFunc("/api/filter", h.Filter)
 
 	staticFS := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", staticFS))

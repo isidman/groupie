@@ -241,3 +241,51 @@ func (h *Handlers) Search(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(results)
 
 }
+
+func (h *Handlers) Filter(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"error": "method not allowed",
+		})
+		return
+	}
+
+	q := r.URL.Query()
+
+	// Read min & max in creation as ints
+	creationMin, _ := strconv.Atoi(q.Get("creationMin"))
+	creationMax, _ := strconv.Atoi(q.Get("creationMax"))
+	albumMin, _ := strconv.Atoi(q.Get("albumMin"))
+	albumMax, _ := strconv.Atoi(q.Get("albumMax"))
+
+	// Read members as []int
+	// The q["members"] gives back []string
+	// It loops through them and convert each to int
+	members := []int{}
+	for _, m := range q["members"] {
+		val, err := strconv.Atoi(m)
+		if err == nil {
+			members = append(members, val)
+		}
+	}
+
+	location := q.Get("location")
+
+	//Filter Parameters
+	params := internal.FilterParams{
+		CreationMin: creationMin,
+		CreationMax: creationMax,
+		AlbumMin:    albumMin,
+		AlbumMax:    albumMax,
+		Members:     members,
+		Location:    location,
+	}
+
+	artists := h.cache.GetArtists()
+	results := internal.FilterArtists(artists, params)
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	_ = json.NewEncoder(w).Encode(results)
+}
