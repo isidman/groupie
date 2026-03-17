@@ -52,6 +52,17 @@ func SearchArtists(query string, artists []Artist) []SearchResult {
 				Type:       "creationDate",
 			})
 		}
+
+		for _, location := range artist.ConcertLocations {
+			if strings.Contains(strings.ToLower(location), query) {
+				results = append(results, SearchResult{
+					ArtistID:   artist.ID,
+					ArtistName: artist.Name,
+					Match:      location,
+					Type:       "location",
+				})
+			}
+		}
 	}
 
 	return results

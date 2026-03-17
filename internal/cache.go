@@ -45,9 +45,19 @@ func (c *ArtistCache) load() {
 		return
 	}
 
+	for i, artist := range artists {
+		locations, err := c.client.GetLocationsByID(artist.ID)
+		if err != nil {
+			log.Println("location fetch failed for artist", artist.ID, err)
+			continue //skip it, don't crash
+		}
+		artists[i].ConcertLocations = locations.Locations
+	}
+
 	c.mu.Lock()
 	c.artists = artists
 	c.mu.Unlock()
+
 }
 
 func (c *ArtistCache) GetArtists() []Artist {
