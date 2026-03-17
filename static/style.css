@@ -191,3 +191,13 @@ button:hover {
   white-space: pre-wrap;
   overflow-x: auto;
 }
+
+@media (max-width: 600px) {
+  .artist {
+    flex-direction: column;
+  }
+
+  .artist-img {
+    width: 100%;
+  }
+}
