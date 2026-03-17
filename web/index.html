@@ -9,7 +9,7 @@ index.html
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Groupie Trackers</title>
+  <title>Groupie Tracker</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/static/style.css" />
 </head>
@@ -17,6 +17,16 @@ index.html
   <header class="container site-header">
     <h1>Groupie Trackers</h1>
     <p>Artists List</p>
+    <div class="search-wrap">
+      <input
+        type="text"
+        id="search-input"
+        class="search-input"
+        placeholder="Search artists, members, locations..."
+        autocomplete="off"
+      />
+      <div id="search-suggestions" class="search-suggestions"></div>
+    </div>
   </header>
 
   <main class="container grid">
@@ -31,5 +41,6 @@ index.html
       </a>
     {{end}}
   </main>
+  <script src="/static/app.js"></script>
 </body>
 </html>

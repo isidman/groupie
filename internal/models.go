@@ -50,3 +50,10 @@ type ArtistPageData struct {
 	AllLocations []string
 	AllDates     []string
 }
+
+type SearchResult struct {
+	ArtistID   int    `json:"artistID"`
+	ArtistName string `json:"artistName"`
+	Match      string `json:"match"`
+	Type       string `json:"type"`
+}

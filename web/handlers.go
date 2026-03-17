@@ -215,3 +215,29 @@ func (h *Handlers) ArtistAPI(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
 }
+
+func (h *Handlers) Search(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"error": "method not allowed",
+		})
+		return
+	}
+
+	query := r.URL.Query().Get("q")
+
+	if len(query) < 2 {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		_ = json.NewEncoder(w).Encode([]internal.SearchResult{})
+		return
+	}
+
+	artists := h.cache.GetArtists()
+	results := internal.SearchArtists(query, artists)
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	_ = json.NewEncoder(w).Encode(results)
+
+}
