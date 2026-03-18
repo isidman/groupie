@@ -15,7 +15,7 @@ index.html
 </head>
 <body>
   <header class="container site-header">
-    <h1>Groupie Trackers</h1>
+    <h1>Groupie Tracker</h1>
     <p>Artists List</p>
     <div class="search-wrap">
       <input
@@ -27,6 +27,7 @@ index.html
       />
       <div id="search-suggestions" class="search-suggestions"></div>
     </div>
+    <button id="filter-btn" class="filter-btn">⚡</button>
   </header>
 
   <main class="container grid">
@@ -41,6 +42,56 @@ index.html
       </a>
     {{end}}
   </main>
+  <div id="filter-modal" class="filter-modal">
+    <div class="filter-panel">
+      <div class="filter-panel-header">
+        <h2>Filter Artists</h2>
+        <button id="filter-close" class="filter-close">x</button>
+      </div>
+
+      <div class="filter-body">
+        <div class="filter-section">
+          <label>Creation Year</label>
+          <div class="range-inputs">
+            <input type="number" id="creationMin" placeholder="From" min="1900" max="2030" />
+            <span>-</span>
+            <input type="number" id="creationMax" placeholder="To" min="1900" max="2030" />
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <label>First Album Year</label>
+          <div class="range-inputs">
+            <input type="number" id="albumMin" placeholder="From" min="1900" max="2030" />
+            <span>-</span>
+            <input type="number" id="albumMax" placeholder="To" min="1900" max="2030" />
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <label>Members</label>
+          <div class="checkbox-group" id="members-checkboxes">
+            <label><input type="checkbox" value="1" /> 1</label>
+            <label><input type="checkbox" value="2" /> 2</label>
+            <label><input type="checkbox" value="3" /> 3</label>
+            <label><input type="checkbox" value="4" /> 4</label>
+            <label><input type="checkbox" value="5" /> 5</label>
+            <label><input type="checkbox" value="6" /> 6</label>
+            <label><input type="checkbox" value="7" /> 7+</label>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <label>Location</label>
+          <input type="text" id="filter-location" placeholder="e.g. vancouver-canada" />
+        </div>
+
+        <div class="filter-results" id="filter-results">
+          <p class="filter-hint">Set filters to see results.</p>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="/static/app.js"></script>
 </body>
 </html>
