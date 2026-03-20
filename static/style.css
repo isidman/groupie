@@ -15,7 +15,7 @@
 }
 
 .site-header {
-  padding: 48px 0 24px;
+  padding: 48px 0 32px;
   border-bottom: 1px solid var(--border);
   margin-bottom: 8px;
 }
@@ -193,10 +193,11 @@ button:hover {
 }
 
 .filter-btn {
-  margin-top: 16px;
   background-color: transparent;
   border: 1px solid var(--border);
+  border-radius: var(--radius);
   color: var(--accent);
+  transition: border-radius 0.3s ease;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   padding: 8px 16px;
@@ -314,6 +315,10 @@ button:hover {
   border-color: var(--accent);
 }
 
+#filter-btn {
+  margin-left: 8px;
+}
+
 #filter-location {
   width: 100%;
   padding: 8px 12px;
@@ -388,10 +393,38 @@ button:hover {
   }
 }
 
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
 .search-wrap {
   position: relative;
-  max-width: 480px;
-  margin-top: 16px;
+  width: 0;
+  transition: width 0.3s ease;
+  display: none;
+}
+
+.search-wrap.open {
+  display: block;
+  width: 380px;
+}
+
+#search-btn.hidden {
+  display: none !important;
+}
+
+.search-wrap .search-input {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.3s ease, width 0.3s ease;
+}
+
+.search-wrap.open .search-input {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .search-input {

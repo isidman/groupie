@@ -17,17 +17,20 @@ index.html
   <header class="container site-header">
     <h1>Groupie Tracker</h1>
     <p>Artists List</p>
-    <div class="search-wrap">
-      <input
-        type="text"
-        id="search-input"
-        class="search-input"
-        placeholder="Search artists, members, locations..."
-        autocomplete="off"
-      />
+    <div class="search-row">
+      <button id="search-btn" class="filter-btn">🔍</button>
+      <div class="search-wrap" id="search-wrap">
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
+          placeholder="Search artists, members, locations..."
+          autocomplete="off"
+        />
       <div id="search-suggestions" class="search-suggestions"></div>
     </div>
     <button id="filter-btn" class="filter-btn">⚡</button>
+    </div>
   </header>
 
   <main class="container grid">
