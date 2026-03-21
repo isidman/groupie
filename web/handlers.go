@@ -9,10 +9,13 @@ package web
 
 import (
 	"encoding/json"
-	"net/http"
-	"strconv"
-
+	"fmt"
 	"groupie-tracker/internal"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+	"time"
 )
 
 // Handlers συγκεντρώνει τα dependencies που χρειάζονται οι handlers.
@@ -132,7 +135,7 @@ func (h *Handlers) ArtistAPI(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"error": "method not allowed",
+			"error": "Method not allowed.",
 		})
 		return
 	}
@@ -143,7 +146,7 @@ func (h *Handlers) ArtistAPI(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusBadRequest)
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"error": "invalid id",
+			"error": "Invalid id.",
 		})
 		return
 	}
@@ -155,7 +158,7 @@ func (h *Handlers) ArtistAPI(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			w.WriteHeader(http.StatusInternalServerError)
 			_ = json.NewEncoder(w).Encode(map[string]any{
-				"error": "artists fetch failed",
+				"error": "Artists fetch failed.",
 			})
 			return
 		}
@@ -173,7 +176,7 @@ func (h *Handlers) ArtistAPI(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusNotFound)
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"error": "artist not found",
+			"error": "Artist not found.",
 		})
 		return
 	}
@@ -183,7 +186,7 @@ func (h *Handlers) ArtistAPI(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusInternalServerError)
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"error": "relation fetch failed",
+			"error": "Relation fetch failed.",
 		})
 		return
 	}
@@ -193,7 +196,7 @@ func (h *Handlers) ArtistAPI(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusInternalServerError)
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"error": "locations fetch failed",
+			"error": "Locations fetch failed.",
 		})
 		return
 	}
@@ -203,7 +206,7 @@ func (h *Handlers) ArtistAPI(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusInternalServerError)
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"error": "dates fetch failed",
+			"error": "Dates fetch failed.",
 		})
 		return
 	}
@@ -221,7 +224,7 @@ func (h *Handlers) Search(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"error": "method not allowed",
+			"error": "Method not allowed.",
 		})
 		return
 	}
@@ -247,7 +250,7 @@ func (h *Handlers) Filter(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"error": "method not allowed",
+			"error": "Method not allowed.",
 		})
 		return
 	}
@@ -288,4 +291,84 @@ func (h *Handlers) Filter(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	_ = json.NewEncoder(w).Encode(results)
+}
+
+func (h *Handlers) Geocode(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"error": "Method not allowed.",
+		})
+		return
+	}
+
+	location := r.URL.Query().Get("location")
+
+	if location == "" {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusBadRequest)
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"error": "Missing location.",
+		})
+		return
+	}
+
+	// split into parts and reverse (ex. "nagoya-japan" to "japan nagoya")
+	parts := strings.Fields(strings.ReplaceAll(strings.ReplaceAll(location, "-", " "), "_", " "))
+	var reversed string
+
+	if len(parts) >= 2 {
+		reversed = parts[len(parts)-1] + " " + strings.Join(parts[:len(parts)-1], " ")
+	} else {
+		reversed = strings.Join(parts, " ")
+	}
+
+	apiURL := fmt.Sprintf(
+		"https://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1&featuretype=city",
+		url.QueryEscape(reversed),
+	)
+
+	// Create and send request - if it doesn't work respond with errors
+	req, err := http.NewRequest(http.MethodGet, apiURL, nil)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"error": "Internal server error.",
+		})
+		return
+	}
+	req.Header.Set("User-Agent", "groupie-tracker/1.0")
+
+	client := &http.Client{Timeout: 5 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		w.WriteHeader(http.StatusRequestTimeout)
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"error": "Request timeout.",
+		})
+		return
+	}
+	defer resp.Body.Close()
+
+	//Decoding response
+	var results []internal.GeoLocation
+	if err := json.NewDecoder(resp.Body).Decode(&results); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"error": "Internal server error.",
+		})
+		return
+	}
+
+	if len(results) == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"error": "No results found.",
+		})
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	_ = json.NewEncoder(w).Encode(results[0])
 }

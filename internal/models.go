@@ -58,3 +58,9 @@ type SearchResult struct {
 	Match      string `json:"match"`
 	Type       string `json:"type"`
 }
+
+type GeoLocation struct {
+	Lat         string `json:"lat"`
+	Lon         string `json:"lon"`
+	DisplayName string `json:"display_name"`
+}
