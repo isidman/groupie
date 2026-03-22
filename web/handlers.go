@@ -231,7 +231,7 @@ func (h *Handlers) Search(w http.ResponseWriter, r *http.Request) {
 
 	query := r.URL.Query().Get("q")
 
-	if len(query) < 2 {
+	if len(query) <= 1 {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		_ = json.NewEncoder(w).Encode([]internal.SearchResult{})
 		return
@@ -314,19 +314,23 @@ func (h *Handlers) Geocode(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// split into parts and reverse (ex. "nagoya-japan" to "japan nagoya")
-	parts := strings.Fields(strings.ReplaceAll(strings.ReplaceAll(location, "-", " "), "_", " "))
-	var reversed string
+	cleaned := strings.ReplaceAll(location, "_", " ")
+	parts := strings.Split(cleaned, "-")
 
-	if len(parts) >= 2 {
-		reversed = parts[len(parts)-1] + " " + strings.Join(parts[:len(parts)-1], " ")
+	var query string
+	if len(parts) >= 2 && !strings.Contains(parts[len(parts)-1], " ") {
+		// Single word country — put it first: "ex:japan osaka"
+		country := parts[len(parts)-1]
+		city := strings.Join(parts[:len(parts)-1], " ")
+		query = country + " " + city
 	} else {
-		reversed = strings.Join(parts, " ")
+		// Multi-word country — keep forward order: "ex: abu dhabi united arab emirates"
+		query = strings.Join(parts, " ")
 	}
 
 	apiURL := fmt.Sprintf(
 		"https://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1&featuretype=city",
-		url.QueryEscape(reversed),
+		url.QueryEscape(query),
 	)
 
 	// Create and send request - if it doesn't work respond with errors

@@ -216,4 +216,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }
 
+  const mapEl= document.getElementById("concert-map")
+
+    if (mapEl) {
+      // Read locations from data attribute
+      const raw = mapEl.getAttribute("data-locations") || ""
+      const locations = raw.split("|").map(l => l.trim()).filter(l => l.length > 0)
+
+      // Start leaflet map
+      const map = L.map("concert-map").setView([20, 0], 2)
+      
+      //OSM layer
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors"
+      }).addTo(map)
+
+      // Geocode locations and add markers
+      //Rate-limited by Nominatim: 1 request per second
+      locations.forEach(function(location, index) {
+        setTimeout(async function() {
+          try {
+            const response = await fetch(`/api/geocode?location=${encodeURIComponent(location)}`)
+            if (!response.ok) return
+            const geo = await response.json()
+            if (geo.lat && geo.lon) {
+              const lat = parseFloat(geo.lat)
+              const lon = parseFloat(geo.lon)
+              L.marker([lat,lon])
+                .addTo(map)
+                .bindPopup(`<b>${location}</b>`)
+            }
+          } catch (e) {
+            console.error("Geocode failed for", location, e)
+          }
+        }, index *1100) // 1.1s Delay between requests
+      })
+    }
 })

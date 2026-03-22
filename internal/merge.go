@@ -3,7 +3,7 @@
 // από διαφορετικά endpoints του API
 // σε μία δομή που είναι εύχρηστη για τα HTML templates.
 //
-// Δεν πραγματοποιεί HTTP κλήσεις.
+// Δεν πραγματοποιεί HTTP requests.
 
 package internal
 
@@ -48,11 +48,17 @@ func BuildArtistPageData(a Artist, r Relation, l Locations, d Dates) ArtistPageD
 	}
 	sort.Strings(allDates)
 
+	rawLocations := make([]string, 0, len(l.Locations))
+	for _, loc := range l.Locations {
+		rawLocations = append(rawLocations, loc)
+	}
+
 	return ArtistPageData{
 		Artist:       a,
 		Concerts:     concerts,
 		AllLocations: allLocations,
 		AllDates:     allDates,
+		RawLocations: rawLocations,
 	}
 }
 

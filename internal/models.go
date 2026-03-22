@@ -50,6 +50,7 @@ type ArtistPageData struct {
 	Concerts     []Concert
 	AllLocations []string
 	AllDates     []string
+	RawLocations []string
 }
 
 type SearchResult struct {
