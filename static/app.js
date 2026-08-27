@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Open
     filterBtn.addEventListener("click", function () {
       filterModal.classList.add("open")
+      runFilter()
     })
 
     // Close

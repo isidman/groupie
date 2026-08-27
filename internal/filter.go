@@ -55,7 +55,9 @@ func FilterArtists(artists []Artist, params FilterParams) []Artist {
 		if params.Location != "" {
 			found := false
 			for _, loc := range artist.ConcertLocations {
-				if strings.Contains(strings.ToLower(loc), strings.ToLower(params.Location)) {
+				formattedLoc := FormatLocation(loc)
+				if strings.Contains(strings.ToLower(loc), strings.ToLower(params.Location)) ||
+					strings.Contains(strings.ToLower(formattedLoc), strings.ToLower(params.Location)) {
 					found = true
 					break
 				}
